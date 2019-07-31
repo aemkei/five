@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>$five - Write JS with 5 different characters: $+=[]</title>
+    <meta name="description" content="Write JS with only 5 different characters: $+=[]. Created by Martin Kleppe aka @aemkei.">
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#222222" />
+    <meta property="og:title" content="$five" />
+    <meta property="og:description" content="Write JS with only 5 different characters: $+=[]" />
+    <meta property="og:image" content="http://aem1k.com/five/preview-large.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@aemkei" />
+    <meta property="twitter:image" content="http://aem1k.com/five/preview-large.png" />
+    <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+    <link href='styles.css' rel='stylesheet' type='text/css' />
+  </head>
+  <body>
+    <div id="container">
+      <h1>$five</h1>
+      <h2>Write JS with only 5 different characters: $+=[]</h2>
+
+      <p>
+        This subset of JavaScript uses the following symbols to write valid code: <code>$</code>, <code>+</code>, <code>=</code>, <code>[</code> and <code>]</code>. To make this possible it requires jQuery UI to be present on the page.
+      </p>
+      <p>
+        Created by:
+        <br>
+        * Martin Kleppe <a href="https://twitter.com/aemkei">@aemkei</a> <br>
+        * Sylvain Pollet-Villard <a href="https://twitter.com/SylvainPV">@SylvainPV</a>
+      </p>
+
+
+      <div>
+        <p>
+          <h3>Example</h3>
+          <textarea id="input">alert("$five")</textarea>
+          <a href="#" id="convert">Click to Convert ↓↓↓↓↓</a>
+          <textarea id="output" onclick="this.select();">
+</textarea>
+          <div id="your-output">↑ Visit <a href="https://jqueryui.com/resources/demos/datepicker/default.html">jqueryui.com/datepicker</a> and copy this into the console or <a href="#" id="run">eval</a> on this site.</div>
+</p>
+
+  <hr>
+
+  <h2 id="explanation">Explanation</h2>
+
+  <p>With the symbols "<code>+</code>", "<code>[</code>" and "<code>]</code>" it is possible to create the numbers from <code>0</code> to <code>9</code>.</p>
+
+  <pre>
+  0 === +[]
+  1 === ++[[]][+[]]
+  2 === ++[++[[]][+[]]][+[]]
+  </pre>
+
+  <p>We also can get <code>undefined</code> by accessing the first element of an empty array. By concatenating that with an empty array, we get the String <code>"undefined"</code>.</p>
+
+  <pre>
+   undefined  === [][+[]]
+  "undefined" === [][+[]] + []
+  </pre>
+
+  <p>Now we can access single characters from that string via their index.</p>
+
+  <pre>
+  `n` === "undefined"[1]
+  `n` === ["undefined"][0][1]
+  `n` === [[]+[][+[]]][+[]][++[[]][+[]]]
+  </pre>
+
+  <p>This gives the characters <code>"f"</code>+<code>"i"</code>+<code>"n"</code>+<code>"d"</code> and allows us to access a default jQuery method:</p>
+
+  <pre>
+  $.find === $["f"+"i"+"n"+"d"]
+  </pre>
+
+  <p>Functions can be transformed into their source code by converting them into a string via <code>String(f)</code>, <code>f+""</code> or <code>f+[]</code>:</p>
+
+  <pre>
+  String($.find) === ($.find+"")
+  ($.find+"") == ($.find+[])
+  </pre>
+
+  <p>The jQuery <code>.find</code> method is quite complex because it contains the <em>Sizzle</em> selector library. In our case it is more than 3700 character. This allows us to get more characters:</p>
+
+  <pre>
+  console.log($.find+[]);
+  "function Sizzle( selector, context, results, seed ) {...
+  </pre>
+
+  <p>With access to the alphabet we can combine characters to write our own code:</p>
+
+  <pre>
+  "alert(1)" === "a"+"l"+"e"+"r"+"t"+"("+"1"+")";
+  </pre>
+
+  <p>We need a way to execute the code. Unfortunately there is no direct access to the global scope to run <code>eval()</code>. But  the jQuery UI DatePicker plugin has a property <code>dpDiv</code> that gives us access to the DOM:</p>
+
+  <pre>
+  document.body === $.datepicker.dpDiv[0].ownerDocument.body
+  </pre>
+
+  <p>In the final step we inject a malicious image and assign the code to the <code>onerror</code> handler:</p>
+
+  <pre>
+  document.body.innerHTML += '&lt;img src onerror="alert(1)"&gt;';
+  </pre>
+
+  <h3 id="background">Background</h3>
+
+  <p>This project is based on Martin Kleppe's <a href="http://www.jsfuck.com/">JSFuck</a> – a subset of JavaScript, where code is written using only six characters: <code>[]()!+</code>. For a long time the so called <em>"Wall of Six"</em> was considered not to be beaten.</p>
+
+  <p><a href="https://syllab.fr/projets/experiments/xcharsjs/index.html">Xchars.js</a> by Sylvain Pollet-Villard was the first project that provided two different solutions for using five characters only: The <code>[+=_]</code> subset required a script with a special ID. The second subset <code>[+|&gt;]</code> (initiated by <a href="https://twitter.com/kinugawamasato/status/915549498725695489">Masato Kinugawa</a>) makes use of the TC39 pipeline operator proposal which is currently only available as a Babel plugin.</p>
+
+  <p>The attack vector for the Xchars subset is small, because not many pages use script tags with single letter IDs and the pipeline operator is not yet implemented.</p>
+
+  <p><em>Note</em>: The current version of <em>$five</em> is targeting only one specific version of jQuery UI (1.12.4) (because it maps specific characters based on the position in the source code) but the same principles work with other version. It uses a public property of the DatePicker plugin to get access to the document body and inject the obfuscated script.</p>
+
+  <h3 id="relatedlinks">Related Links</h3>
+
+  <ul>
+  <li>Follow us on Twitter: <a href="https://twitter.com/aemkei">@aemkei</a>, <a href="https://twitter.com/SylvainPV">@SylvainPV</a></li>
+
+  <li>Read more about <a href="http://www.jsfuck.com/">JSFuck</a> and <a href="https://syllab.fr/projets/experiments/xcharsjs/index.html">Xchars.js</a></li>
+
+  <li>Visit <a href="https://aem1k.com">aem1k.com</a> and <a href="https://syllab.fr">syllab.fr</a> for more hacks</li>
+  </ul>
+
+      <hr>
+
+<pre id="logo">
+      <b>#</b>
+      <b>#</b>
+     <b>##</b>
+      <b>#</b> #
+   ## <b>#</b> #
+ ## # <b>#</b> # #
+# # # <b>#</b> ##
+# # # <b>#</b> # #
+# # # <b>#</b> #  #
+</pre>
+      20XX - Martin Kleppe
+
+    </div>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="five.js"></script>
+
+  </body>
+</html>
