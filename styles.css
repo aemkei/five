@@ -305,3 +305,7 @@ textarea:hover {
 #your-input:before {
   display: inline;
 }
+
+#count {
+  color: #999;
+}

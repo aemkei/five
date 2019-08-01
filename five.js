@@ -130,18 +130,33 @@
   }
 
   function convert(){
-    $("#output").val(encode($("#input").val()));
+    const value = encode($("#input").val());
+    $("#output").val(value);
+    $("#count").text(`${value.length} chars`);
   }
 
-  $("#convert").on("click", function(){
+  function init(){
+
+    $("img[src]").remove();
+
+    $("#convert").on("click", function(){
+      $("#output").val("...");
+      $("#count").text("...");
+      setTimeout(convert, 200);
+      return false;
+    });
+
+    $("#run").on("click", function(){
+      const value = $("#input").val();
+      eval.call(window,($("#output").val()));
+      $("#input").val(value);
+      init();
+      return false;
+    });
+
     convert();
-    return false;
-  });
+  }
 
-  $("#run").on("click", function(){
-    eval.call(window,($("#output").val()));
-    return false;
-  });
+  init();
 
-  convert();
 })();
