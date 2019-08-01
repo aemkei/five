@@ -100,6 +100,12 @@
   document.body === $.datepicker.dpDiv[0].ownerDocument.body
   </pre>
 
+  Accessing `window` would be possible, too using some `$.Widget` internals:
+
+  <pre>
+  window === $.Widget._childConstructors[7]._proto.options.position.of
+  </pre>
+
   <p>In the final step we inject a malicious image and assign the code to the <code>onerror</code> handler:</p>
 
   <pre>
