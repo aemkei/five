@@ -215,7 +215,9 @@ html, body {
   font-weight: normal;
 }
 
-h1,
+h1 {
+  color: #00FF66;
+}
 h2 {
   color: #FF00FF;
 }
